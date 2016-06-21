@@ -130,12 +130,14 @@ def main():
     if not roundText:
         ax.set_anchor("NW")
         #write the text over
-        txt = ax.annotate("CNRCWP", xy=(0.345, 0.48), xycoords="figure fraction",
-                          font_properties=FontProperties(size=75, family="ABADI MT CONDENSED", weight="extra bold"),
+        txt = ax.annotate("CNRCWP", xy=(0.405, 0.48), xycoords="figure fraction",
+                          font_properties=FontProperties(size=75,
+                                                         fname="ufonts.com_abadi-mt-condensed-bold.ttf",
+                                                         weight="extra bold"),
                           color="k")
 
         #set stroke
-        txt.set_path_effects([peff.withStroke(linewidth=6, foreground="w")])
+        txt.set_path_effects([peff.withStroke(linewidth=3, foreground="w")])
     else:
         x0, y0 = 0.4, 0.5
         r0 = 0.73
@@ -175,6 +177,8 @@ def main():
     # plt.tight_layout(pad=2)
     # plt.show()
     plt.savefig('cnrcwpLogo_official.png', dpi=250, transparent=True)
+
+
 
 
 if __name__ == "__main__":
