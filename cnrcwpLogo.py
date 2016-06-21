@@ -8,20 +8,21 @@ import matplotlib.patheffects as peff
 import matplotlib.pyplot as plt
 
 
+# The points are named after the cities, although they do not really coincide geographically
 cityname_to_lon_lat = {
     "Montreal": (-73.5550, 45.5081),
-    "Toronto": (-79.4042, 43.6481),
+   #  "Toronto": (-79.4042, 43.6481),
     "Victoria": (-123.3347, 48.4328),
     "Waterloo": (-80.5361, 43.4706),
     "Saskatoon": (-106.6353, 52.1311),
-    "Calgary": (-114.0669, 51.0544),
-    "UNBC": (-122.7502, 53.9136)
+    "Calgary": (-115.0669, 55.0544),
+    "UNBC": (-112.7502, 60.9136)
 }
 
 name_to_city = {}
 
 connector_color = "w"
-mark_color = "#fdec84"
+mark_color = "w"
 
 
 class City:
@@ -64,9 +65,8 @@ def _connect_cities(cityA, cityB, theBasemap, flat=True, zorder=1):
 
 
 def main():
-    lon_0 = -90
-    lat_0 = 15
-    resDpi = 72
+    lon_0 = -100
+    lat_0 = 65
 
     colorLine = 'k'
     lWidth = 4
@@ -78,7 +78,8 @@ def main():
     assert isinstance(fig, Figure)
     print(fig.get_size_inches())
 
-    mlogo = Basemap(projection='nsper', lon_0=lon_0, lat_0=lat_0, satellite_height=h * 100000000., resolution='c')
+    mlogo = Basemap(projection='nsper', lon_0=lon_0, lat_0=lat_0, satellite_height=h * 1000., resolution='c')
+    #mlogo = Basemap(projection='nsper', lon_0=lon_0, lat_0=lat_0, satellite_height=h * 100000000., resolution='c')
     #mlogo = Basemap(projection='npstere', lon_0=lon_0, lat_0=lat_0, boundinglat=40, resolution='c', round=True)
     #mlogo = Basemap(height=16700000,width=12000000,resolution='l',area_thresh=1000.,projection='omerc', lon_0=-100,lat_0=15,lon_2=-120,lat_2=65,lon_1=-50,lat_1=-55)
 
@@ -102,7 +103,6 @@ def main():
     cities = create_cities(mlogo)
 
     montreal = name_to_city["Montreal"]
-    toronto = name_to_city["Toronto"]
     unbc = name_to_city["UNBC"]
     victoria = name_to_city["Victoria"]
     saskatoon = name_to_city["Saskatoon"]
@@ -113,14 +113,11 @@ def main():
 
     for city in cities:
 
-        if city in [toronto, waterloo]:
-            pass
-
         xi, yi = mlogo(city.lon, city.lat)
         x.append(xi)
         y.append(yi)
 
-    #mlogo.scatter(x, y, s=100, marker=(100, 2, 0), c=mark_color, zorder=3, linewidths=0.1)
+    mlogo.scatter(x, y, s=200, marker="o", c=mark_color, zorder=3, linewidths=0.1)
 
     ax = plt.gca()
     assert isinstance(ax, Axes)
@@ -133,11 +130,11 @@ def main():
         ax.set_anchor("NW")
         #write the text over
         txt = ax.annotate("CNRCWP", xy=(0.345, 0.48), xycoords="figure fraction",
-                          font_properties=FontProperties(size=75, family="serif", weight="bold"),
-                          color="#21759b")
+                          font_properties=FontProperties(size=75, family="ABADI MT CONDENSED", weight="extra bold"),
+                          color="k")
 
         #set stroke
-        txt.set_path_effects([peff.withStroke(linewidth=3, foreground="#000000")])
+        txt.set_path_effects([peff.withStroke(linewidth=3, foreground="w")])
     else:
         x0, y0 = 0.4, 0.5
         r0 = 0.73
@@ -159,25 +156,23 @@ def main():
                               xycoords="axes fraction",
                               font_properties=FontProperties(size=35, family="serif", weight="bold"),
                               color="#21759b", rotation=90 + phi0_deg + i * dphi_deg)
-            #set stroke
-            txt.set_path_effects([peff.withStroke(linewidth=3, foreground="#000000")])
+            # set stroke
+            txt.set_path_effects([peff.withStroke(linewidth=3, foreground="w")])
 
         ax.annotate("x", xy=(0.5, 0.5), xycoords="axes fraction")
 
-
-
-
-        #    _connect_cities(saskatoon, unbc, mlogo)
-        #    _connect_cities(montreal, toronto, mlogo)
-        #    _connect_cities(victoria, calgary, mlogo)
-        #    _connect_cities(calgary, saskatoon, mlogo)
-        #    _connect_cities(montreal, saskatoon, mlogo)
-        #    _connect_cities(saskatoon, waterloo, mlogo)
-        #    _connect_cities(unbc, victoria, mlogo)
-        #    _connect_cities(calgary, unbc, mlogo)
+    _connect_cities(saskatoon, unbc, mlogo)
+    _connect_cities(victoria, calgary, mlogo)
+    #    _connect_cities(calgary, saskatoon, mlogo)
+    _connect_cities(montreal, saskatoon, mlogo)
+    _connect_cities(saskatoon, waterloo, mlogo)
+    #    _connect_cities(unbc, victoria, mlogo)
+    _connect_cities(calgary, unbc, mlogo)
+    _connect_cities(victoria, saskatoon, mlogo)
+    _connect_cities(waterloo, montreal, mlogo)
 
     # plt.tight_layout(pad=2)
-    #plt.show()
+    # plt.show()
     plt.savefig('cnrcwpLogo_official.png', dpi=250, transparent=True)
 
 
