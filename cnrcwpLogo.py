@@ -58,7 +58,7 @@ def _connect_cities(cityA, cityB, theBasemap, flat=True, zorder=1):
             x.append(city.x)
             y.append(city.y)
 
-        theBasemap.plot(x, y, connector_color, lw=2, alpha=0.8)
+        theBasemap.plot(x, y, connector_color, lw=4)
     else:
         theBasemap.drawgreatcircle(cityA.lon, cityA.lat, cityB.lon, cityB.lat, lw=1, color=connector_color,
                                    zorder=zorder)
@@ -72,6 +72,7 @@ def main():
     lWidth = 4
     h = 3000.
 
+    mark_size = 250
     roundText = False
 
     fig = plt.figure(figsize=(8.533, 3.333))
@@ -117,7 +118,7 @@ def main():
         x.append(xi)
         y.append(yi)
 
-    mlogo.scatter(x, y, s=200, marker="o", c=mark_color, zorder=3, linewidths=0.1)
+    mlogo.scatter(x, y, s=mark_size, marker="o", c=mark_color, zorder=3, linewidths=0.1)
 
     ax = plt.gca()
     assert isinstance(ax, Axes)
@@ -134,7 +135,7 @@ def main():
                           color="k")
 
         #set stroke
-        txt.set_path_effects([peff.withStroke(linewidth=3, foreground="w")])
+        txt.set_path_effects([peff.withStroke(linewidth=6, foreground="w")])
     else:
         x0, y0 = 0.4, 0.5
         r0 = 0.73
@@ -157,7 +158,7 @@ def main():
                               font_properties=FontProperties(size=35, family="serif", weight="bold"),
                               color="#21759b", rotation=90 + phi0_deg + i * dphi_deg)
             # set stroke
-            txt.set_path_effects([peff.withStroke(linewidth=3, foreground="w")])
+            txt.set_path_effects([peff.withStroke(linewidth=5, foreground="w")])
 
         ax.annotate("x", xy=(0.5, 0.5), xycoords="axes fraction")
 
